@@ -8,10 +8,10 @@
   <meta name="description" content>
   <meta name="author" content="shudba">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="wwww">
+  <meta property="og:title" content="初识SQL注入的万能语句&#39; or 1=1#">
   <meta property="og:description" content="The harder,the luckier!">
   <meta property="og:site_name" content="wwww">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:image" content="https://shud.github.io">
   
     <link rel="alternate" href="/atom.xml" title="wwww" type="application/atom+xml">
@@ -35,8 +35,7 @@
 </head>
 
   <body>
-    <!-- Archive Header -->
-<!-- Page Header -->
+    <!-- Page Header -->
 
 
 <header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
@@ -44,7 +43,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">Blog Archives</p>
+          <p class="title">初识SQL注入的万能语句&#39; or 1=1#</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -89,74 +88,39 @@
   </div>
 </header>
 
-<!-- Archive List -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      
-        <div class="archive-item">
-  <a href="/2019/04/29/初识SQL注入万能语句’or 1=1#/" class="post-title">
-    初识SQL注入的万能语句&#39; or 1=1#
-  </a>
-  <div class="date text-muted">Posted on 2019-04-29 22:58:04</div>
-</div>
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By shudba</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-04-29</span>
+            <span class="time">22:58:28</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>sql注入什么的也是挺有意思的，初识了SQL注入的万能语句’or 1=1#<br>我们在编写登陆过程一般都是这样的：<br><strong>输入用户名：”username”<br>输入密码：“password”</strong><br>当语句编写如下时：<img src="https://img-blog.csdnimg.cn/20190429192451366.PNG" alt="在这里插入图片描述"><br>当我们输入相应正确的用户名和密码时，就可以登陆进去，错误的，时无法登陆的。但是这个验证机制可以通过SQL语句来构造一个特殊的”字符串“通过验证。<br>当我们在用户名处输入<code>&#39; or 1=1#</code>,密码随便写，就可以登陆进入网站<br>把它带入上图的语句中，就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where uername=&apos; &apos; or1=1#&apos; and password=balabala</span><br></pre></td></tr></table></figure>
+<p>分析原因，在SQL语句中<strong>#</strong>是注释符，所以后面的语句都会被注释掉，那么上面的语句就等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where username=&apos; &apos; or1=1</span><br></pre></td></tr></table></figure>
+<p>那么在SQL语句中<strong>where</strong>相当于判断语句，并且是由 or 连接的，所以 username=’ ‘  和 1=1 中有一个为真就为真。1=1一定为真，所以语句又等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user</span><br></pre></td></tr></table></figure>
+<p>这个语句的作用是爆出表中所有字段。<br>也就是说可以用 ‘or 1=1# 这么一个字符串就可以绕开登陆的密码，直接进入程序。<br>以上为通过此片<a href="https://blog.csdn.net/weixin_41607190/article/details/82818804" target="_blank" rel="noopener">博客</a>学习所知</p>
 
-      
-        <div class="archive-item">
-  <a href="/2019/04/21/PHP学习笔记（一）初步（基础）学习/" class="post-title">
-    PHP学习笔记（一）初步（基础）学习
-  </a>
-  <div class="date text-muted">Posted on 2019-04-21 21:26:36</div>
-</div>
-
-      
-        <div class="archive-item">
-  <a href="/2019/03/31/css/" class="post-title">
-    css
-  </a>
-  <div class="date text-muted">Posted on 2019-03-31 03:21:17</div>
-</div>
-
-      
-        <div class="archive-item">
-  <a href="/2019/03/27/HTML/" class="post-title">
-    HTML
-  </a>
-  <div class="date text-muted">Posted on 2019-03-27 20:50:03</div>
-</div>
-
-      
-        <div class="archive-item">
-  <a href="/2019/03/18/hello-hexo/" class="post-title">
-    hello hexo
-  </a>
-  <div class="date text-muted">Posted on 2019-03-18 20:33:41</div>
-</div>
-
-      
-        <div class="archive-item">
-  <a href="/2019/03/18/hello-world/" class="post-title">
-    Hello World
-  </a>
-  <div class="date text-muted">Posted on 2019-03-18 20:14:43</div>
-</div>
-
-      
-
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<!-- Pagination -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-10 col-md-10 col-md-offset-1">
-      <ul class="pagination">
-          
-          
-      </ul>
-    </div>
-  </div>
-</div>
+</article>
 
 
 
