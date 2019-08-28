@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content>
+  <meta name="author" content="shudba">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="wwww">
+  <meta property="og:description" content="The harder,the luckier!">
+  <meta property="og:site_name" content="wwww">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://shud.github.io">
+  
+    <link rel="alternate" href="/atom.xml" title="wwww" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>wwww</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Untitled Post</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By shudba</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-08-28</span>
+            <span class="time">20:28:53</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h2 id="CTF之WEB"><a href="#CTF之WEB" class="headerlink" title="CTF之WEB"></a>CTF之WEB</h2><p><strong>WEB题中的一些常用思路</strong><br><img src="https://img-blog.csdnimg.cn/20190828201052103.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>                         <strong>WEB题常用工具</strong><br><img src="https://img-blog.csdnimg.cn/20190828200916660.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>一下是对思路的一些补充</p>
+<ol>
+<li>直接查看源码：查看源码的方法除了鼠标右键查看外，还可以通过在网址栏前面加入”view-source:“，语句或者通过F12键打开控制台，通过控制台改变一些元素的信息来获取flag</li>
+<li>查看修改过添加HTTP请求头响应头：对于这种类型的题目，可能直接修改信息行不通，那就得用到BP这个工具了，通过修改代理来间接改变成题目所需要的信息，再通过软件运行，即可得到flag，对于一些有SQL语句预防的情况下可以使用“’ or 1=1 group by pwd with rollup limit 1 offset 2#   ”这条语句直接得到flag</li>
+<li>后台登录   绕过登录获得FLAG</li>
+<li>利用开发者工具控制台 如果打开题目是很多的代码，可以将代码粘贴至控制台（例如jother代码属于js代码的一种）然后控制台会执行该代码</li>
+<li>使用BP拦截 Burp-Suite是一个很强大的软件。</li>
+<li>上传绕过  由于文件上传功能实现代码没有严格限制用户上传到文件后缀以及文件类型，导致攻击者能够向某个可通过WEB访问的目录上传恶意文件，并被脚本解析器执行，这样就可以在远程服务器上执行恶意脚本 例如  一句话木马<br>文件截断：在文件头末尾改变一下，把十六进制的空格（20）改成空字节（00）</li>
+<li>SQL注入  SQL注入就是把sql语句以精妙的方式放到输入框中，送到后台去执行，从而获取非法的信息判断是否存在SQL注入的一些语句：”1‘ and 1=1，””and 1=2”</li>
+<li>cookie 登录网站的时候会产生cookie信息，通过获取cookie信息来绕过登录，用BP来获取数据包，通过删掉cookie信息来得到flag</li>
+<li><p>HASH函数 利用sha函数的漏洞（sha函数默认传入的是字符串，传入其他类型得到的结果是false)<br>以上为<a href="https://blog.csdn.net/Ljt101222/article/details/81104676" target="_blank" rel="noopener">这个博主的文章</a> ，为了方便做题，刚开始的我需要不断地实践，会继续做题的。<br><strong>web1</strong><br><img src="https://img-blog.csdnimg.cn/20190827203146915.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d3d3d4aWFvYmFp,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源码可以得出：</p>
+</li>
+<li><p>字符串QNKCDZO进行lmd5解码，可得到0e830400451993494058024219903391并赋值给变量<code>$md51</code></p>
+</li>
+<li>GET请求获取a的值并赋予给变量<code>$a</code>,并对变量<code>$a</code>进行md5操作赋值给变量<code>$md52</code>;</li>
+<li>isset()函数判断了变量<code>$a</code>是否定义，即若变量<code>$a</code>不为空，且不等于‘QNKCDZO’,并且<code>$md51</code>与变量<code>$md52</code>的值内容相等时，则可以得到flag;</li>
+<li><code>$md51</code>为0e830400451993494058024219903391，（在md5开头是0e的字符串中，0e在比较的时候会将其视作为科学计数法，所以无论0e后面是什么，0的多少次方还是0。）即为0*10^830400451993494058024219903391，就是0；</li>
+<li>那么满足条件的变量<code>$a</code>是其md5值为0e开头即可，找一个md5加密后为0的值：s878926199a  <a href="https://blog.csdn.net/qq_41281571/article/details/81292786" target="_blank" rel="noopener">MD5加密后==’0’</a><br>由于是GET请求获取变量<code>$a</code>,构造参数a=<br>s878926199a</li>
+</ol>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
